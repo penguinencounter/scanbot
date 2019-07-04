@@ -18,7 +18,8 @@ enum PongEvent
     BOUNDARY_AHEAD_EVENT,
     BOUNDARY_LEFT_EVENT,
     BOUNDARY_RIGHT_EVENT,
-    ENCODER_EVENT
+    ENCODER_EVENT,
+    PROXIMITY_EVENT,
 };
 
 // Start button pressed.
@@ -61,4 +62,20 @@ class EncoderEvent : public Event
 {
 public:
     EncoderEvent() : Event(ENCODER_EVENT, "enc") {}
+};
+
+// Proximity sensor detected
+class ProximityEvent : public Event
+{
+    
+public:
+    enum Type
+    {
+        LEFT,
+        RIGHT,
+        AHEAD,
+        NONE
+    };
+    Type type;
+    ProximityEvent() : Event(PROXIMITY_EVENT, "prox") {this->type = NONE;}
 };

@@ -12,6 +12,7 @@ extern BoundaryAheadEvent boundary_ahead_event;
 extern BoundaryLeftEvent boundary_left_event;
 extern BoundaryRightEvent boundary_right_event;
 extern EncoderEvent encoder_event;
+extern ProximityEvent proximity_event;
 
 void IRobot::setup()
 {
@@ -28,8 +29,8 @@ void IRobot::setup()
     boundary_sensor.initThreeSensors();
 
     // Set up proximity sensors. Choose one, or call init() with arguments.
-//    proximity_sensors.initFrontSensor();
-    proximity_sensors.initThreeSensors();
+    proximity_sensors.initFrontSensor();
+//    proximity_sensors.initThreeSensors();
 }
 
 void IRobot::generate_events(EventQueue & q)
@@ -67,6 +68,33 @@ void IRobot::generate_events(EventQueue & q)
         q.push(&encoder_event);
         encoder_count = 0;
     }
+
+    // Check proximity sensors.
+    proximity_sensors.read();
+    uint8_t l_counts = proximity_sensors.countsLeftWithLeftLeds();
+    uint8_t r_counts = proximity_sensors.countsRightWithRightLeds();
+    bool detected = l_counts >= 1 || r_counts >= 1;
+    if (detected) {
+        // There's something there.
+        if (l_counts < r_counts) {
+            proximity_event.type = proximity_event.RIGHT;
+            q.push(&proximity_event);
+        }
+        else if (l_counts > r_counts) {
+            proximity_event.type = proximity_event.LEFT;
+            q.push(&proximity_event);
+        }
+        else {
+            proximity_event.type = proximity_event.AHEAD;
+            q.push(&proximity_event);
+        }
+    }
+    else
+    {
+        proximity_event.type = proximity_event.NONE;
+        q.push(&proximity_event);
+    }
+    
 }
 
 //

@@ -31,6 +31,7 @@ BoundaryAheadEvent boundary_ahead_event;
 BoundaryLeftEvent boundary_left_event;
 BoundaryRightEvent boundary_right_event;
 EncoderEvent encoder_event;
+ProximityEvent proximity_event;
 
 EventQueue queue;
 

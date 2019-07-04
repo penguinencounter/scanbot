@@ -2,7 +2,7 @@
 if [ "$1" == "" ]
 then
     clear
-    read -p "Commit, push, pull, and prune ? " answer
+    read -p "Push, pull, and prune ? " answer
 else
     answer="$1"
     echo "command-line args: $answer"
@@ -12,11 +12,9 @@ fi
 while true
 do
   case $answer in
-   [yY]* ) git add *
-	   git commit
-	   git push
+   [yY]* ) git push
 	   git pull
-	   git remote prune  
+	   git remote prune origin
            break;;
 
    [nN]* ) echo "Canceled"

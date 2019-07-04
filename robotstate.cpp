@@ -44,6 +44,9 @@ bool RobotState::on_event(Event & event)
         case ENCODER_EVENT:
             handled = on_event(static_cast<EncoderEvent &>(event));
             break;
+        case PROXIMITY_EVENT:
+            handled = on_event(static_cast<ProximityEvent &>(event));
+            break;
         default:
             break;
     }
@@ -76,6 +79,11 @@ bool RobotState::on_event(BoundaryRightEvent & event)
 }
 
 bool RobotState::on_event(EncoderEvent & event)
+{
+    return false;
+}
+
+bool RobotState::on_event(ProximityEvent & event)
 {
     return false;
 }
