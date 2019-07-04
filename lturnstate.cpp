@@ -6,7 +6,9 @@
  */
 #include "lturnstate.h"
 #include "rturnstate.h"
+#include "idlestate.h"
 
+extern IdleState idle;
 extern RTurnState rturn;
 
 LTurnState::LTurnState(State * parent, IRobot & robot) :
@@ -15,7 +17,7 @@ LTurnState::LTurnState(State * parent, IRobot & robot) :
 
 Result LTurnState::on_entry() 
 {
-    m_robot.rotate_left(0, 250);
+    m_robot.rotate_left(0, 150);
     return OK;
 }
 
@@ -23,6 +25,10 @@ bool LTurnState::on_event(ProximityEvent & event)
 {
     if (event.type == event.RIGHT) {
         transition_to_state(&rturn);
+    }
+    else if (event.type == event.AHEAD || event.type == event.NONE) {
+        m_robot.move_stop();
+        transition_to_state(&idle);
     }
     return true;
 }
