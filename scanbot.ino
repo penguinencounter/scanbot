@@ -15,6 +15,9 @@
 #include "robot.h"
 #include "robotstatemachine.h"
 #include "standbystate.h"
+#include "idlestate.h"
+#include "lturnstate.h"
+#include "rturnstate.h"
 
 // Robot interface.
 IRobot robot;
@@ -23,6 +26,9 @@ IRobot robot;
 RobotStateMachine machine(nullptr, robot);
 InitState initialized(&machine, robot);
 StandbyState standby(&machine, robot);
+IdleState idle(&machine, robot);
+LTurnState lturn(&machine, robot);
+RTurnState rturn(&machine, robot);
 
 // Events.
 StartButtonEvent start_event;

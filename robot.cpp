@@ -71,27 +71,36 @@ void IRobot::generate_events(EventQueue & q)
 
     // Check proximity sensors.
     proximity_sensors.read();
-    uint8_t l_counts = proximity_sensors.countsLeftWithLeftLeds();
-    uint8_t r_counts = proximity_sensors.countsRightWithRightLeds();
+    uint8_t l_counts = proximity_sensors.countsFrontWithLeftLeds();
+    uint8_t r_counts = proximity_sensors.countsFrontWithRightLeds();
+    lcd.gotoXY(0, 1);
+    lcd.print(l_counts);
+    lcd.print(" ");
+    lcd.print(r_counts);
+    lcd.print(" ");
     bool detected = l_counts >= 1 || r_counts >= 1;
     if (detected) {
         // There's something there.
         if (l_counts < r_counts) {
             proximity_event.type = proximity_event.RIGHT;
+            lcd.print("r");
             q.push(&proximity_event);
         }
         else if (l_counts > r_counts) {
             proximity_event.type = proximity_event.LEFT;
+            lcd.print("l");
             q.push(&proximity_event);
         }
         else {
             proximity_event.type = proximity_event.AHEAD;
+            lcd.print("a");
             q.push(&proximity_event);
         }
     }
     else
     {
         proximity_event.type = proximity_event.NONE;
+        lcd.print("n");
         q.push(&proximity_event);
     }
     

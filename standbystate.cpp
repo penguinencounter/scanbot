@@ -5,6 +5,8 @@
     LICENSE.txt, or https://opensource.org/licenses/BSD-3-Clause.
  */
 #include "standbystate.h"
+#include "idlestate.h"
+extern IdleState idle;
 
 StandbyState::StandbyState(State * parent, IRobot & robot) :
     RobotState("standby", parent, robot)
@@ -18,5 +20,6 @@ Result StandbyState::on_entry()
 
 bool StandbyState::on_event(TimerEvent & event)
 {
+    transition_to_state(&idle);
     return true;
 }
