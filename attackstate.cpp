@@ -8,56 +8,60 @@
 #include "lturnstate.h"
 #include "rturnstate.h"
 #include "idlestate.h"
+#include "turningstate.h"
 
 extern IdleState idle;
 extern RTurnState rturn;
 extern LTurnState lturn;
+extern TurningState turning;
 
-AttackState::AttackState(State * parent, IRobot & robot) :
-    RobotState("attack", parent, robot)
-{}
-
-Result AttackState::on_entry() 
+AttackState::AttackState(State *parent, IRobot &robot) : RobotState("attack", parent, robot)
 {
-    
+}
+
+Result AttackState::on_entry()
+{
     m_robot.move_forward(200);
     return OK;
 }
 
-bool AttackState::on_event(ProximityEvent & event)
+bool AttackState::on_event(ProximityEvent &event)
 {
-    if (event.type == event.RIGHT) {
+    if (event.type == event.RIGHT)
+    {
         m_robot.move_stop();
         transition_to_state(&rturn);
     }
-    else if (event.type == event.LEFT) {
+    else if (event.type == event.LEFT)
+    {
         m_robot.move_stop();
         transition_to_state(&lturn);
     }
-    else if (event.type == event.NONE) {
+    else if (event.type == event.NONE)
+    {
         m_robot.move_stop();
         transition_to_state(&idle);
     }
     return true;
 }
 
-bool AttackState::on_event(BoundaryAheadEvent & event) {
+bool AttackState::on_event(BoundaryAheadEvent &event)
+{
     m_robot.rotate_left(180, 200);
+    transition_to_state(&turning);
     return true;
 }
 
-bool AttackState::on_event(BoundaryLeftEvent & event) {
-    m_robot.display("l!");
+bool AttackState::on_event(BoundaryLeftEvent &event)
+{
     m_robot.rotate_right(110, 200);
+    transition_to_state(&turning);
     return true;
 }
 
-bool AttackState::on_event(BoundaryRightEvent & event) {
+bool AttackState::on_event(BoundaryRightEvent &event)
+{
     m_robot.rotate_left(110, 200);
-    return true;
-}
-
-bool AttackState::on_event(EncoderEvent & event) {
-    transition_to_state(&idle);
+    transition_to_state(&turning);
     return true;
 }

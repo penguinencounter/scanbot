@@ -19,5 +19,4 @@ protected:
     bool on_event(BoundaryAheadEvent & event) override;
     bool on_event(BoundaryLeftEvent & event) override;
     bool on_event(BoundaryRightEvent & event) override;
-    bool on_event(EncoderEvent & event) override;
 };

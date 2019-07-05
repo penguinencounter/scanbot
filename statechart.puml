@@ -10,7 +10,12 @@ state RobotStateMachine {
     R_Turn : on entry / start right turn
     L_Turn -> R_Turn : Right
     R_Turn -> L_Turn : Left
-    L_Turn --> Idle : None or Ahead
-    R_Turn --> Idle : None or Ahead
+    L_Turn --> Idle : None
+    R_Turn --> Idle : None
+    L_Turn --> Attacking : Ahead
+    R_Turn --> Attacking : Ahead
+    Attacking : on entry / zoom forward
+    Attacking --> Turning : On edge / Start turn
+    Turning --> Attacking : Done turning
 }
 @enduml

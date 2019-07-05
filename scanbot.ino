@@ -19,6 +19,7 @@
 #include "lturnstate.h"
 #include "rturnstate.h"
 #include "attackstate.h"
+#include "turningstate.h"
 
 // Robot interface.
 IRobot robot;
@@ -31,6 +32,7 @@ IdleState idle(&machine, robot);
 LTurnState lturn(&machine, robot);
 RTurnState rturn(&machine, robot);
 AttackState attack(&machine, robot);
+TurningState turning(&machine, robot);
 
 // Events.
 StartButtonEvent start_event;
