@@ -14,5 +14,6 @@ public:
     IdleState(State * parent, IRobot & robot);
 
 protected:
+    Result on_entry() override;
     bool on_event(ProximityEvent & event) override;
 };

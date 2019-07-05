@@ -15,6 +15,11 @@ IdleState::IdleState(State * parent, IRobot & robot) :
     RobotState("idle", parent, robot)
 {}
 
+Result IdleState::on_entry()
+{
+    m_robot.move_stop();
+}
+
 bool IdleState::on_event(ProximityEvent & event)
 {
     if (event.type == event.LEFT) {

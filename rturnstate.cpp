@@ -7,9 +7,11 @@
 #include "rturnstate.h"
 #include "lturnstate.h"
 #include "idlestate.h"
+#include "attackstate.h"
 
 extern IdleState idle;
 extern LTurnState lturn;
+extern AttackState attack;
 
 RTurnState::RTurnState(State * parent, IRobot & robot) :
     RobotState("rturn", parent, robot)
@@ -17,7 +19,7 @@ RTurnState::RTurnState(State * parent, IRobot & robot) :
 
 Result RTurnState::on_entry() 
 {
-    m_robot.rotate_right(0, 150);
+    m_robot.rotate_right(0, 200);
     return OK;
 }
 
@@ -26,9 +28,11 @@ bool RTurnState::on_event(ProximityEvent & event)
     if (event.type == event.LEFT) {
         transition_to_state(&lturn);
     }
-    else if (event.type == event.AHEAD || event.type == event.NONE) {
-        m_robot.move_stop();
+    else if (event.type == event.NONE) {
         transition_to_state(&idle);
+    }
+    else if (event.type == event.AHEAD) {
+        transition_to_state(&attack);
     }
     return true;
 }
