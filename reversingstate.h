@@ -8,11 +8,12 @@
 
 #include "robotstate.h"
 
-class TurningState : public RobotState
+class ReversingState : public RobotState
 {
 public:
-    TurningState(State * parent, IRobot & robot);
+    ReversingState(State * parent, IRobot & robot);
 
 protected:
+    Result on_entry() override;
     bool on_event(EncoderEvent & event) override;
 };

@@ -130,6 +130,12 @@ void IRobot::move_forward(int speed)
     motors.setSpeeds(speed, speed);
 }
 
+void IRobot::move_forward(int speed, long counts)
+{
+    motors.setSpeeds(speed, speed);
+    encoder_count = counts;
+    encoders.getCountsAndResetLeft();
+}
 void IRobot::move_stop()
 {
     motors.setSpeeds(0, 0);
@@ -149,6 +155,16 @@ void IRobot::rotate_right(long degrees, int speed)
     motors.setSpeeds(speed, -speed);
 }
 
+void IRobot::slow_l(int speed)
+{
+    motors.setSpeeds(speed / 2, speed);
+}
+
+void IRobot::slow_r(int speed)
+{
+    motors.setSpeeds(speed, speed / 2);
+}
+
 void IRobot::cancel_encoder()
 {
     encoder_count = 0;
@@ -161,7 +177,7 @@ Boundary IRobot::boundary_detect()
 {
     // below threshold => boundary.
     // above threshold => ring.
-    const unsigned int threshold = 250;
+    const unsigned int threshold = 500;
 
     unsigned int sensor_values[3];
     boundary_sensor.read(sensor_values);

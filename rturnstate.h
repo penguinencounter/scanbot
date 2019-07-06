@@ -16,4 +16,7 @@ public:
 protected:
     Result on_entry() override;
     bool on_event(ProximityEvent & event) override;
+    bool on_event(BoundaryAheadEvent & event) override;
+    bool on_event(BoundaryLeftEvent & event) override;
+    bool on_event(BoundaryRightEvent & event) override;
 };

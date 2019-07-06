@@ -8,10 +8,12 @@
 #include "rturnstate.h"
 #include "idlestate.h"
 #include "attackstate.h"
+#include "reversingstate.h"
 
 extern IdleState idle;
 extern AttackState attack;
 extern RTurnState rturn;
+extern ReversingState reversing;
 
 LTurnState::LTurnState(State * parent, IRobot & robot) :
     RobotState("lturn", parent, robot)
@@ -19,7 +21,7 @@ LTurnState::LTurnState(State * parent, IRobot & robot) :
 
 Result LTurnState::on_entry() 
 {
-    m_robot.rotate_left(0, 200);
+    m_robot.slow_l(300);
     return OK;
 }
 
@@ -36,3 +38,22 @@ bool LTurnState::on_event(ProximityEvent & event)
     }
     return true;
 }
+
+bool LTurnState::on_event(BoundaryAheadEvent &event)
+{
+    transition_to_state(&reversing);
+    return true;
+}
+
+bool LTurnState::on_event(BoundaryLeftEvent &event)
+{
+    transition_to_state(&reversing);
+    return true;
+}
+
+bool LTurnState::on_event(BoundaryRightEvent &event)
+{
+    transition_to_state(&reversing);
+    return true;
+}
+

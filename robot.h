@@ -33,9 +33,12 @@ public:
     void cancel_timer();
     void start_timer(unsigned long timeout);
     void move_forward(int speed);
+    void move_forward(int speed, long counts);
     void move_stop();
     void rotate_left(long degrees, int speed);
     void rotate_right(long degrees, int speed);
+    void slow_l(int speed);
+    void slow_r(int speed);
     void cancel_encoder();
 
 private:

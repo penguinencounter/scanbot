@@ -8,12 +8,12 @@
 #include "lturnstate.h"
 #include "rturnstate.h"
 #include "idlestate.h"
-#include "turningstate.h"
+#include "reversingstate.h"
 
 extern IdleState idle;
 extern RTurnState rturn;
 extern LTurnState lturn;
-extern TurningState turning;
+extern ReversingState reversing;
 
 AttackState::AttackState(State *parent, IRobot &robot) : RobotState("attack", parent, robot)
 {
@@ -21,7 +21,7 @@ AttackState::AttackState(State *parent, IRobot &robot) : RobotState("attack", pa
 
 Result AttackState::on_entry()
 {
-    m_robot.move_forward(200);
+    m_robot.move_forward(300);
     return OK;
 }
 
@@ -29,39 +29,32 @@ bool AttackState::on_event(ProximityEvent &event)
 {
     if (event.type == event.RIGHT)
     {
-        m_robot.move_stop();
         transition_to_state(&rturn);
     }
     else if (event.type == event.LEFT)
     {
-        m_robot.move_stop();
         transition_to_state(&lturn);
     }
     else if (event.type == event.NONE)
     {
-        m_robot.move_stop();
-        transition_to_state(&idle);
     }
     return true;
 }
 
 bool AttackState::on_event(BoundaryAheadEvent &event)
 {
-    m_robot.rotate_left(180, 200);
-    transition_to_state(&turning);
+    transition_to_state(&reversing);
     return true;
 }
 
 bool AttackState::on_event(BoundaryLeftEvent &event)
 {
-    m_robot.rotate_right(110, 200);
-    transition_to_state(&turning);
+    transition_to_state(&reversing);
     return true;
 }
 
 bool AttackState::on_event(BoundaryRightEvent &event)
 {
-    m_robot.rotate_left(110, 200);
-    transition_to_state(&turning);
+    transition_to_state(&reversing);
     return true;
 }
